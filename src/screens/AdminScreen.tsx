@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { pendingSubmissions } from '../data/prices';
 import type { RepSubmission } from '../data/prices';
 

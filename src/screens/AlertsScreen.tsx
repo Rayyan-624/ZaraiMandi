@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { todayRates } from '../data/prices';
 
 interface Alert { id: string; commodity: string; commodityUrdu: string; emoji: string; target: number; direction: 'above'|'below'; active: boolean; }

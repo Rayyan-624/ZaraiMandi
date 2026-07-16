@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import type { Rate } from './data/prices';
 import './index.css';
 import HomeScreen from './screens/HomeScreen';

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { todayRates, verticals } from '../data/prices';
 import type { Rate } from '../data/prices';
 

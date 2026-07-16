@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { todayRates } from '../data/prices';
 import type { Rate } from '../data/prices';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
@@ -60,7 +60,7 @@ export default function DetailScreen({ onBack, rate }: Props) {
             <LineChart data={rate.history}>
               <XAxis dataKey="date" tick={{fontSize:10}} />
               <YAxis domain={['auto','auto']} tick={{fontSize:10}} width={55}/>
-              <Tooltip formatter={(v:number)=>`Rs. ${v.toLocaleString()}`}/>
+              <Tooltip formatter={(v: any) => v !== undefined && v !== null ? `Rs. ${Number(v).toLocaleString()}` : ''}/>
               <Line type="monotone" dataKey="price" stroke="#0d5c35" strokeWidth={2.5} dot={{fill:'#0d5c35',r:4}}/>
             </LineChart>
           </ResponsiveContainer>
