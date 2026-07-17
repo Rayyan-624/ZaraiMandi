@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import type { AppState } from '../App';
 
 const CONTRACTS = [
   { id: 'ZM-SL-250622-001', commodity: 'Wheat (Fine Quality)', buyer: 'Al-Falah Traders', quantity: '100 Bags (40kg each)', total: 390000, advance: 117000, delivery: '30 May 2025', status: 'active', progress: 65 },
@@ -8,18 +7,17 @@ const CONTRACTS = [
 ];
 
 const OFFERS = [
-  { buyer: 'Al-Falah Traders', ntn: '1234567-8', price: 3950, qty: 50, total: 197500, delivery: '30 May 2025', verified: true },
+  { buyer: 'Al-Falah Traders', price: 3950, qty: 50, total: 197500, delivery: '30 May 2025', verified: true },
   { buyer: 'Awan Rice Mills', price: 3900, qty: 100, total: 390000, delivery: '28 May 2025', verified: true },
   { buyer: 'Hassan Traders', price: 3880, qty: 75, total: 291000, delivery: '31 May 2025', verified: false },
 ];
 
 const TRACKING_STEPS = ['Contract', 'Payment', 'Production', 'In Transit', 'Delivered'];
 
-export default function FinanceScreen({ state }: { state: AppState }) {
+export default function FinanceScreen() {
   const [activeTab, setActiveTab] = useState<'contracts' | 'offers' | 'wallet' | 'tracking'>('contracts');
-  const [selectedContract, setSelectedContract] = useState<typeof CONTRACTS[0] | null>(null);
   const [toast, setToast] = useState('');
-  const showToast = (msg: string) => { setToast(msg); setTimeout(() => setToast(''), 2000); };
+  const showToast = (msg: string) => { setToast(msg); setTimeout(() => setToast(''), 2500); };
 
   return (
     <div style={{ background: 'var(--bg)', minHeight: '100vh' }}>
@@ -40,14 +38,14 @@ export default function FinanceScreen({ state }: { state: AppState }) {
         {/* Wallet card */}
         <div className="wallet-card" style={{ margin: '16px 0 0' }}>
           <div style={{ position: 'relative', zIndex: 2 }}>
-            <div style={{ fontSize: 12, opacity: 0.8, marginBottom: 4 }}>Escrow Balance (In Meezan Bank)</div>
+            <div style={{ fontSize: 12, opacity: 0.8, marginBottom: 4 }}>Escrow Balance (Meezan Bank)</div>
             <div style={{ fontSize: 34, fontWeight: 900, marginBottom: 4 }}>Rs. 1,17,000</div>
-            <div style={{ fontSize: 12, opacity: 0.75 }}>Advance payment · Contract ZM-SL-250622-001</div>
+            <div style={{ fontSize: 12, opacity: 0.75 }}>Advance · Contract ZM-SL-250622-001</div>
             <div style={{ display: 'flex', gap: 8, marginTop: 14 }}>
               <button style={{ flex: 1, padding: '9px', borderRadius: 10, background: 'rgba(255,255,255,0.2)', border: '1px solid rgba(255,255,255,0.3)', color: 'white', fontWeight: 700, fontSize: 13, cursor: 'pointer' }} onClick={() => showToast('📲 Withdraw to Easypaisa')}>
                 📲 Withdraw
               </button>
-              <button style={{ flex: 1, padding: '9px', borderRadius: 10, background: 'rgba(255,255,255,0.2)', border: '1px solid rgba(255,255,255,0.3)', color: 'white', fontWeight: 700, fontSize: 13, cursor: 'pointer' }} onClick={() => showToast('📜 History opened')}>
+              <button style={{ flex: 1, padding: '9px', borderRadius: 10, background: 'rgba(255,255,255,0.2)', border: '1px solid rgba(255,255,255,0.3)', color: 'white', fontWeight: 700, fontSize: 13, cursor: 'pointer' }} onClick={() => showToast('📜 Transaction history')}>
                 📜 History
               </button>
             </div>
@@ -57,12 +55,12 @@ export default function FinanceScreen({ state }: { state: AppState }) {
 
       {/* Tabs */}
       <div style={{ display: 'flex', background: 'white', borderBottom: '2px solid var(--border)' }}>
-        {[['contracts','📋 Contracts'], ['offers','💬 Offers'], ['wallet','💰 Wallet'], ['tracking','🚛 Tracking']] .map(([id, label]) => (
-          <button key={id} onClick={() => setActiveTab(id as any)} style={{ flex: 1, padding: '12px 4px', border: 'none', background: 'none', fontSize: 12, fontWeight: 700, color: activeTab === id ? 'var(--g-dark)' : 'var(--text-3)', borderBottom: activeTab === id ? '2.5px solid var(--g-primary)' : '2.5px solid transparent', cursor: 'pointer', transition: 'all 0.2s', marginBottom: -2 }}>{label}</button>
+        {([['contracts', '📋 Contracts'], ['offers', '💬 Offers'], ['wallet', '💰 Wallet'], ['tracking', '🚛 Tracking']] as const).map(([id, label]) => (
+          <button key={id} onClick={() => setActiveTab(id)} style={{ flex: 1, padding: '12px 4px', border: 'none', background: 'none', fontSize: 12, fontWeight: 700, color: activeTab === id ? 'var(--g-dark)' : 'var(--text-3)', borderBottom: activeTab === id ? '2.5px solid var(--g-primary)' : '2.5px solid transparent', cursor: 'pointer', transition: 'all 0.2s', marginBottom: -2 }}>{label}</button>
         ))}
       </div>
 
-      {/* Contracts */}
+      {/* ── Contracts ── */}
       {activeTab === 'contracts' && (
         <div style={{ padding: '12px 0' }}>
           <div style={{ padding: '4px 18px 12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -72,7 +70,7 @@ export default function FinanceScreen({ state }: { state: AppState }) {
           {CONTRACTS.map(c => {
             const statusColor = c.status === 'completed' ? 'var(--up)' : c.status === 'active' ? 'var(--g-primary)' : '#E65100';
             return (
-              <div key={c.id} className="card" style={{ margin: '0 18px 12px', padding: 16, cursor: 'pointer' }} onClick={() => setSelectedContract(c)}>
+              <div key={c.id} className="card" style={{ margin: '0 18px 12px', padding: 16, cursor: 'pointer' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
                   <div>
                     <div style={{ fontWeight: 700, fontSize: 15 }}>{c.commodity}</div>
@@ -100,14 +98,14 @@ export default function FinanceScreen({ state }: { state: AppState }) {
           })}
           <div style={{ padding: '8px 18px 24px' }}>
             <div style={{ background: '#FFF8E7', borderRadius: 12, padding: '12px 16px', fontSize: 13, color: '#5D4037' }}>
-              🕌 <strong>Bay' al-Salam</strong>: Advance payment for future delivery. Shariah-compliant. No interest.
-              <br/><span style={{ color: 'var(--text-3)', fontSize: 11, marginTop: 4, display: 'block' }}>Islamic Banking Partner: Meezan Bank</span>
+              🕌 <strong>Bay' al-Salam</strong>: Advance payment for future delivery. Shariah-compliant. No interest (riba).
+              <br /><span style={{ color: 'var(--text-3)', fontSize: 11, marginTop: 4, display: 'block' }}>Islamic Banking Partner: Meezan Bank</span>
             </div>
           </div>
         </div>
       )}
 
-      {/* Buyer Offers */}
+      {/* ── Offers ── */}
       {activeTab === 'offers' && (
         <div style={{ padding: '12px 0' }}>
           <div style={{ padding: '4px 18px 12px' }}>
@@ -121,7 +119,7 @@ export default function FinanceScreen({ state }: { state: AppState }) {
                   <div style={{ width: 42, height: 42, borderRadius: 12, background: 'var(--g-pale)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22 }}>🏢</div>
                   <div>
                     <div style={{ fontWeight: 700, fontSize: 14 }}>{o.buyer}</div>
-                    {o.verified && <div style={{ display: 'flex', gap: 4, alignItems: 'center', marginTop: 2 }}><span className="verified-badge">✓ Verified NTN</span></div>}
+                    {o.verified && <span className="verified-badge" style={{ marginTop: 2, display: 'inline-flex' }}>✓ Verified NTN</span>}
                   </div>
                 </div>
                 <div style={{ textAlign: 'right' }}>
@@ -134,7 +132,7 @@ export default function FinanceScreen({ state }: { state: AppState }) {
                 <span>📅 {o.delivery}</span>
               </div>
               <div style={{ display: 'flex', gap: 8 }}>
-                <button className="btn-sm btn-green" style={{ flex: 1, padding: '10px' }} onClick={() => showToast('✅ Offer Accepted!')}>Accept</button>
+                <button className="btn-sm btn-green" style={{ flex: 1, padding: '10px' }} onClick={() => showToast('✅ Offer Accepted! Escrow initiated.')}>Accept</button>
                 <button className="btn-sm" style={{ flex: 1, padding: '10px', background: 'var(--g-pale)', color: 'var(--g-dark)', border: '1px solid var(--g-light)' }} onClick={() => showToast('💬 Counter offer sent')}>Counter</button>
               </div>
             </div>
@@ -142,7 +140,7 @@ export default function FinanceScreen({ state }: { state: AppState }) {
         </div>
       )}
 
-      {/* Wallet */}
+      {/* ── Wallet ── */}
       {activeTab === 'wallet' && (
         <div style={{ padding: '16px 18px' }}>
           {[
@@ -154,10 +152,8 @@ export default function FinanceScreen({ state }: { state: AppState }) {
               <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-3)', marginBottom: 8 }}>{g.date}</div>
               {g.items.map((item, i) => (
                 <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 16px', background: 'white', borderRadius: 12, marginBottom: 6, border: '1px solid var(--border)' }}>
-                  <div>
-                    <div style={{ fontSize: 13, fontWeight: 600 }}>{item.desc}</div>
-                  </div>
-                  <div style={{ fontWeight: 800, fontSize: 15, color: item.type === 'credit' ? 'var(--up)' : 'var(--down)' }}>{item.amount}</div>
+                  <div style={{ fontSize: 13, fontWeight: 600 }}>{item.desc}</div>
+                  <div style={{ fontWeight: 800, fontSize: 15, color: item.type === 'credit' ? 'var(--up)' : 'var(--down)', whiteSpace: 'nowrap', marginLeft: 8 }}>{item.amount}</div>
                 </div>
               ))}
             </div>
@@ -165,7 +161,7 @@ export default function FinanceScreen({ state }: { state: AppState }) {
         </div>
       )}
 
-      {/* Tracking */}
+      {/* ── Tracking ── */}
       {activeTab === 'tracking' && (
         <div style={{ padding: '12px 18px' }}>
           <div style={{ fontWeight: 700, fontSize: 16, marginBottom: 16 }}>🚛 Delivery Tracking</div>
@@ -174,22 +170,24 @@ export default function FinanceScreen({ state }: { state: AppState }) {
               <div>
                 <div style={{ fontWeight: 700 }}>Wheat (Fine Quality)</div>
                 <div style={{ fontSize: 12, color: 'var(--text-2)' }}>Khalid Farms · Multan Mandi</div>
-                <div style={{ fontSize: 11, color: 'var(--text-3)', marginTop: 2 }}>50 Bags · Contract ZM-SL-250622-001</div>
+                <div style={{ fontSize: 11, color: 'var(--text-3)', marginTop: 2 }}>50 Bags · ZM-SL-250622-001</div>
               </div>
-              <span style={{ background: 'var(--g-pale)', color: 'var(--g-dark)', padding: '3px 10px', borderRadius: 12, fontWeight: 700, fontSize: 12 }}>In Transit 🚛</span>
+              <span style={{ background: 'var(--g-pale)', color: 'var(--g-dark)', padding: '3px 10px', borderRadius: 12, fontWeight: 700, fontSize: 12, whiteSpace: 'nowrap' }}>In Transit 🚛</span>
             </div>
 
-            {/* Progress steps */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: 0, marginBottom: 14 }}>
+            {/* Step tracker */}
+            <div style={{ display: 'flex', alignItems: 'center', marginBottom: 14, overflowX: 'auto' }}>
               {TRACKING_STEPS.map((s, i) => (
                 <div key={s} style={{ display: 'flex', alignItems: 'center', flex: 1 }}>
                   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flex: 1 }}>
-                    <div style={{ width: 24, height: 24, borderRadius: '50%', background: i < 3 ? 'var(--g-primary)' : i === 3 ? 'var(--gold)' : 'var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, color: i <= 3 ? 'white' : 'var(--text-3)', fontWeight: 700, border: i === 3 ? '3px solid var(--gold)' : 'none', flexShrink: 0 }}>
+                    <div style={{ width: 26, height: 26, borderRadius: '50%', background: i < 3 ? 'var(--g-primary)' : i === 3 ? 'var(--gold)' : 'var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, color: i <= 3 ? 'white' : 'var(--text-3)', fontWeight: 700, flexShrink: 0, border: i === 3 ? '3px solid var(--gold)' : 'none' }}>
                       {i < 3 ? '✓' : i === 3 ? '🚛' : i + 1}
                     </div>
-                    <div style={{ fontSize: 9, color: i <= 3 ? 'var(--g-dark)' : 'var(--text-3)', fontWeight: i === 3 ? 700 : 400, marginTop: 4, textAlign: 'center' }}>{s}</div>
+                    <div style={{ fontSize: 9, color: i <= 3 ? 'var(--g-dark)' : 'var(--text-3)', fontWeight: i === 3 ? 700 : 400, marginTop: 4, textAlign: 'center', width: 50 }}>{s}</div>
                   </div>
-                  {i < TRACKING_STEPS.length - 1 && <div style={{ width: '100%', height: 2, background: i < 3 ? 'var(--g-primary)' : 'var(--border)', maxWidth: 20 }} />}
+                  {i < TRACKING_STEPS.length - 1 && (
+                    <div style={{ height: 2, background: i < 3 ? 'var(--g-primary)' : 'var(--border)', flex: 1, maxWidth: 24, flexShrink: 0, marginTop: -14 }} />
+                  )}
                 </div>
               ))}
             </div>
@@ -206,8 +204,7 @@ export default function FinanceScreen({ state }: { state: AppState }) {
                 <span style={{ fontWeight: 600 }}>{x.v}</span>
               </div>
             ))}
-
-            <button className="btn-primary" style={{ marginTop: 14 }} onClick={() => showToast('📍 Tracking map opened')}>
+            <button className="btn-primary" style={{ marginTop: 14 }} onClick={() => showToast('📍 Live map tracking opened')}>
               📍 Track Live
             </button>
           </div>

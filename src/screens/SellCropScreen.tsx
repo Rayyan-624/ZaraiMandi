@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import type { AppState } from '../App';
 
 const CROPS = [
   { id: 'wheat', emoji: '🌾', name: 'Wheat', nameUr: 'گندم', price: 3900 },
@@ -12,7 +11,7 @@ const CROPS = [
 
 const DISTRICTS = ['Faisalabad', 'Lahore', 'Multan', 'Bahawalpur', 'Sukkur', 'Karachi', 'Islamabad', 'Peshawar', 'Quetta', 'Hyderabad'];
 
-export default function SellCropScreen({ state }: { state: AppState }) {
+export default function SellCropScreen() {
   const [step, setStep] = useState(0);
   const [crop, setCrop] = useState<string | null>(null);
   const [qty, setQty] = useState(50);

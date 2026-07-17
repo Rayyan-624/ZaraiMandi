@@ -74,7 +74,7 @@ export default function MandiLiveScreen({ state }: { state: AppState }) {
   return (
     <div style={{ height: '100dvh', display: 'flex', flexDirection: 'column', background: '#000' }}>
       {/* TikTok-style header */}
-      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, z: 50, padding: '14px 18px 10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 100 }}>
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, padding: '14px 18px 10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 100 }}>
         <div className="feed-tabs" style={{ flex: 1, border: 'none', gap: 0 }}>
           {([['following', 'Following'], ['nearby', 'Nearby'], ['foryou', 'For You']] as const).map(([id, label]) => (
             <button key={id} className={`feed-tab ${feedTab === id ? 'active' : ''}`} onClick={() => setFeedTab(id)}>
