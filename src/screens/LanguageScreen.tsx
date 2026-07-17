@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { AppState } from '../App';
+import { t } from '../i18n';
 
 const LANGS = [
   { id: 'en', code: 'EN', native: 'English', english: 'English' },
@@ -18,8 +19,8 @@ export default function LanguageScreen({ state }: { state: AppState }) {
     <div className="onb-screen" style={{ background: '#fff', maxWidth: 430, margin: '0 auto' }}>
       {/* Top Header */}
       <div style={{ padding: '30px 24px 20px', textAlign: 'center' }}>
-        <h1 style={{ fontSize: 24, fontWeight: 800, color: 'var(--g-dark)', fontFamily: 'Poppins' }}>Choose Language</h1>
-        <p style={{ color: 'var(--text-2)', fontSize: 13, marginTop: 4 }}>Select your preferred language</p>
+        <h1 style={{ fontSize: 24, fontWeight: 800, color: 'var(--g-dark)', fontFamily: 'Poppins' }}>{t(state.lang, 'chooseLanguage')}</h1>
+        <p style={{ color: 'var(--text-2)', fontSize: 13, marginTop: 4 }}>{t(state.lang, 'selectPreferred')}</p>
       </div>
 
       {/* Language list */}
@@ -77,7 +78,7 @@ export default function LanguageScreen({ state }: { state: AppState }) {
             onClick={() => { state.setLang(selected as any); state.setFlow('role'); }}
             style={{ width: '100%', padding: '16px', fontSize: 16, borderRadius: '12px' }}
           >
-            Continue →
+            {t(selected as any, 'continue')}
           </button>
         </div>
       </div>

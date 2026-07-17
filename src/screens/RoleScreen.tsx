@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { AppState } from '../App';
+import { t } from '../i18n';
 
 const ROLES = [
   { id: 'farmer', emoji: '👨‍🌾', title: 'Farmer', titleUrdu: 'کسان', desc: 'View rates, sell crops, get best deals' },
@@ -17,8 +18,8 @@ export default function RoleScreen({ state }: { state: AppState }) {
         <div style={{ width: 72, height: 72, borderRadius: 20, background: 'var(--g-pale)', border: '2px solid var(--g-light)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px', fontSize: 36 }}>
           👥
         </div>
-        <h1 style={{ fontSize: 26, fontWeight: 800, color: 'var(--g-dark)', fontFamily: 'Poppins' }}>Choose Your Role</h1>
-        <p style={{ color: 'var(--text-2)', fontSize: 14, marginTop: 8 }}>Select how you want to use Zarai Mandi</p>
+        <h1 style={{ fontSize: 26, fontWeight: 800, color: 'var(--g-dark)', fontFamily: 'Poppins' }}>{t(state.lang, 'chooseRole')}</h1>
+        <p style={{ color: 'var(--text-2)', fontSize: 14, marginTop: 8 }}>{t(state.lang, 'selectUse')}</p>
       </div>
 
       <div style={{ padding: '0 20px 24px' }}>
@@ -35,9 +36,9 @@ export default function RoleScreen({ state }: { state: AppState }) {
                 </div>
               )}
               <div className="role-icon">{r.emoji}</div>
-              <div className="role-title">{r.title}</div>
-              <div className="urdu" style={{ fontSize: 12, color: 'var(--text-2)', margin: '2px 0 4px' }}>{r.titleUrdu}</div>
-              <div className="role-desc">{r.desc}</div>
+              <div className="role-title" style={{ fontFamily: state.lang === 'en' ? 'Inter' : 'Noto Nastaliq Urdu' }}>
+                {t(state.lang, r.id as any)}
+              </div>
             </div>
           ))}
         </div>
@@ -56,7 +57,7 @@ export default function RoleScreen({ state }: { state: AppState }) {
           style={{ opacity: selected ? 1 : 0.5 }}
           onClick={() => { if (selected) { state.setRole(selected as any); state.setFlow('otp'); } }}
         >
-          Continue →
+          {t(state.lang, 'continue')}
         </button>
       </div>
     </div>

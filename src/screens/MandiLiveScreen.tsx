@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { AppState } from '../App';
+import { t } from '../i18n';
 
 const POSTS = [
   {
@@ -200,25 +201,25 @@ export default function MandiLiveScreen({ state }: { state: AppState }) {
       <nav className="bottom-nav" style={{ position: 'relative', bottom: 'auto', background: '#000', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
         <button className="nav-btn" style={{ color: 'rgba(255,255,255,0.9)' }} onClick={() => state.setTab('feed' as any)}>
           <svg fill="none" stroke="currentColor" strokeWidth="2.2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
-          <span style={{ color: 'rgba(255,255,255,0.6)' }}>Feed</span>
+          <span style={{ color: 'rgba(255,255,255,0.6)' }}>{t(state.lang, 'navFeed')}</span>
         </button>
         <button className="nav-btn" style={{ color: 'rgba(255,255,255,0.6)' }} onClick={() => state.setTab('rates' as any)}>
           <svg fill="none" stroke="currentColor" strokeWidth="2.2" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-          <span>Rates</span>
+          <span>{t(state.lang, 'navRates')}</span>
         </button>
         <button className="nav-btn-center" onClick={() => state.setTab('sell' as any)}>
           <div className="fab">
             <svg fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
           </div>
-          <span style={{ color: 'rgba(255,255,255,0.6)' }}>Sell</span>
+          <span style={{ color: 'rgba(255,255,255,0.6)' }}>{t(state.lang, 'navSell')}</span>
         </button>
         <button className="nav-btn" style={{ color: 'rgba(255,255,255,0.6)' }} onClick={() => state.setTab('finance' as any)}>
           <svg fill="none" stroke="currentColor" strokeWidth="2.2" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
-          <span>Finance</span>
+          <span>{t(state.lang, 'navFinance')}</span>
         </button>
         <button className="nav-btn" style={{ color: 'rgba(255,255,255,0.6)' }} onClick={() => state.setTab('profile' as any)}>
           <svg fill="none" stroke="currentColor" strokeWidth="2.2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-          <span>Profile</span>
+          <span>{t(state.lang, 'navProfile')}</span>
         </button>
       </nav>
 
