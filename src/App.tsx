@@ -51,7 +51,7 @@ export default function App() {
   // Main App — feed has its own full-screen layout with built-in bottom nav
   if (tab === 'feed') {
     return (
-      <div style={{ width: '100%', maxWidth: 430, height: '100dvh', margin: '0 auto', overflow: 'hidden' }}>
+      <div style={{ width: '100%', maxWidth: 430, height: '100dvh', margin: '0 auto', overflow: 'hidden', position: 'relative' }}>
         <MandiLiveScreen state={state} />
       </div>
     );

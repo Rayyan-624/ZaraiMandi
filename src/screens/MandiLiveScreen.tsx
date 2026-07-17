@@ -72,7 +72,7 @@ export default function MandiLiveScreen({ state }: { state: AppState }) {
   };
 
   return (
-    <div style={{ height: '100dvh', display: 'flex', flexDirection: 'column', background: '#000' }}>
+    <div style={{ height: '100dvh', display: 'flex', flexDirection: 'column', background: '#000', position: 'relative' }}>
       {/* TikTok-style header */}
       <div style={{ position: 'absolute', top: 0, left: 0, right: 0, padding: '14px 18px 10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 100 }}>
         <div className="feed-tabs" style={{ flex: 1, border: 'none', gap: 0 }}>
