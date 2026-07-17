@@ -1,54 +1,90 @@
-import { useState } from 'react';
-import type { Rate } from './data/prices';
+import { useEffect, useState } from 'react';
+
+type AppFlow = 'splash' | 'language' | 'role' | 'otp' | 'app';
+type AppTab = 'feed' | 'rates' | 'sell' | 'finance' | 'profile';
+type UserRole = 'farmer' | 'buyer' | 'rep' | 'broker' | null;
+type Lang = 'ur' | 'en' | 'pn' | 'sd' | 'ps';
+
+export interface AppState {
+  flow: AppFlow;
+  tab: AppTab;
+  role: UserRole;
+  lang: Lang;
+  setFlow: (f: AppFlow) => void;
+  setTab: (t: AppTab) => void;
+  setRole: (r: UserRole) => void;
+  setLang: (l: Lang) => void;
+}
+
 import './index.css';
-import HomeScreen from './screens/HomeScreen';
-import AdminScreen from './screens/AdminScreen';
-import RepSubmitScreen from './screens/RepSubmitScreen';
-import SubscriptionScreen from './screens/SubscriptionScreen';
-import AlertsScreen from './screens/AlertsScreen';
-import DetailScreen from './screens/DetailScreen';
-
-
-type Screen = 'home' | 'admin' | 'submit' | 'subscribe' | 'alerts';
-
-const NAV = [
-  { id: 'home' as Screen,    icon: '🏠', label: 'Home',      labelUrdu: 'ہوم' },
-  { id: 'alerts' as Screen,  icon: '🔔', label: 'Alerts',    labelUrdu: 'الرٹ' },
-  { id: 'submit' as Screen,  icon: '📋', label: 'Submit',    labelUrdu: 'جمع' },
-  { id: 'admin' as Screen,   icon: '⚙️', label: 'Admin',     labelUrdu: 'ایڈمن' },
-  { id: 'subscribe' as Screen,icon:'💳', label: 'Subscribe', labelUrdu: 'سبسکرائب' },
-];
+import SplashScreen from './screens/SplashScreen';
+import LanguageScreen from './screens/LanguageScreen';
+import RoleScreen from './screens/RoleScreen';
+import OTPScreen from './screens/OTPScreen';
+import MandiLiveScreen from './screens/MandiLiveScreen';
+import RatesScreen from './screens/RatesScreen';
+import SellCropScreen from './screens/SellCropScreen';
+import FinanceScreen from './screens/FinanceScreen';
+import ProfileScreen from './screens/ProfileScreen';
 
 export default function App() {
-  const [screen, setScreen] = useState<Screen>('home');
-  const [detail, setDetail] = useState<Rate | null>(null);
+  const [flow, setFlow] = useState<AppFlow>('splash');
+  const [tab, setTab] = useState<AppTab>('feed');
+  const [role, setRole] = useState<UserRole>(null);
+  const [lang, setLang] = useState<Lang>('ur');
 
-  if (detail) return (
-    <div className="app-shell" style={{overflowY:'auto'}}>
-      <DetailScreen rate={detail} onBack={()=>setDetail(null)}/>
-    </div>
-  );
+  const state: AppState = { flow, tab, role, lang, setFlow, setTab, setRole, setLang };
 
+  // Splash auto-advance
+  useEffect(() => {
+    if (flow === 'splash') {
+      const t = setTimeout(() => setFlow('language'), 2800);
+      return () => clearTimeout(t);
+    }
+  }, [flow]);
+
+  if (flow === 'splash') return <SplashScreen />;
+  if (flow === 'language') return <LanguageScreen state={state} />;
+  if (flow === 'role') return <RoleScreen state={state} />;
+  if (flow === 'otp') return <OTPScreen state={state} />;
+
+  // Main App
   return (
     <div className="app-shell">
-      <div style={{height:'calc(100vh - 80px)',overflowY:'auto'}}>
-        {screen === 'home'      && <HomeScreen onSelectRate={r=>setDetail(r)}/>}
-        {screen === 'admin'     && <AdminScreen/>}
-        {screen === 'submit'    && <RepSubmitScreen/>}
-        {screen === 'subscribe' && <SubscriptionScreen/>}
-        {screen === 'alerts'    && <AlertsScreen/>}
+      <div className="screen-scroll" style={{ paddingBottom: tab === 'feed' ? 0 : 80 }}>
+        {tab === 'feed'    && <MandiLiveScreen state={state} />}
+        {tab === 'rates'   && <RatesScreen state={state} />}
+        {tab === 'sell'    && <SellCropScreen state={state} />}
+        {tab === 'finance' && <FinanceScreen state={state} />}
+        {tab === 'profile' && <ProfileScreen state={state} />}
       </div>
 
-      {/* Bottom navigation */}
-      <div className="bottom-nav">
-        {NAV.map(n => (
-          <button key={n.id} className={`nav-item ${screen===n.id?'active':''}`} onClick={()=>setScreen(n.id)}>
-            <span style={{fontSize:20}}>{n.icon}</span>
-            <span className="nav-label">{n.label}</span>
-            {screen===n.id && <div className="nav-active-dot"/>}
+      {tab !== 'feed' && (
+        <nav className="bottom-nav">
+          <button className={`nav-btn ${tab==='feed'?'active':''}`} onClick={()=>setTab('feed')}>
+            <svg fill="none" stroke="currentColor" strokeWidth="2.2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            <span>Feed</span>
           </button>
-        ))}
-      </div>
+          <button className={`nav-btn ${tab==='rates'?'active':''}`} onClick={()=>setTab('rates')}>
+            <svg fill="none" stroke="currentColor" strokeWidth="2.2" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            <span>Rates</span>
+          </button>
+          <button className="nav-btn-center" onClick={()=>setTab('sell')}>
+            <div className="fab">
+              <svg fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </div>
+            <span>Sell</span>
+          </button>
+          <button className={`nav-btn ${tab==='finance'?'active':''}`} onClick={()=>setTab('finance')}>
+            <svg fill="none" stroke="currentColor" strokeWidth="2.2" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+            <span>Finance</span>
+          </button>
+          <button className={`nav-btn ${tab==='profile'?'active':''}`} onClick={()=>setTab('profile')}>
+            <svg fill="none" stroke="currentColor" strokeWidth="2.2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span>Profile</span>
+          </button>
+        </nav>
+      )}
     </div>
   );
 }
